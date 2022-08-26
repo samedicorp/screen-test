@@ -7,7 +7,10 @@ modulaSettings = {
     logging = logging, 
     useLocal = useLocal,
     modules = {
-        ["samedicorp.screen-test.module"] = { },
-        ["samedicorp.modula.modules.console"] = { name = "console" }
+        ["samedicorp.screen-test.module"] = { name = "main" },
+        ["samedicorp.modula.modules.console"] = { name = "console" },
+        ["samedicorp.modula.modules.screen"] = { }
     }
 }
+
+
