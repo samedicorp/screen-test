@@ -55,13 +55,15 @@ if command then
     reply = "done"
 end
 
-local font = loadFont("Play", 20)
-local layer = createLayer()
-addText(layer, font, string.format("screen: %s", name), 10, 20)
+local render = require('samedicorp.modula.render')
+local layer = render.Layer()
+layer:addButton("test", render.Rect(100, 100, 60, 20))
+layer:addLabel(string.format("screen: %s", name), 10, 20)
 if lastCommand then
-    addText(layer, font, string.format("command: %s", lastCommand), 10, 40)
-    addText(layer, font, string.format("payload: %s", lastPayload), 10, 60)
+    layer:addLabel(string.format("command: %s", lastCommand), 10, 40)
+    layer:addLabel(string.format("payload: %s", lastPayload), 10, 60)
 end
+layer:render()
 ]]
 
 return Module
