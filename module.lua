@@ -57,13 +57,27 @@ end
 
 local render = require('samedicorp.modula.render')
 local layer = render.Layer()
-layer:addButton("test", render.Rect(100, 100, 60, 20))
+layer:addButton("test", render.Rect(100, 100, 60, 20), function()
+    message = "test pressed"
+end)
+layer:addButton("other", render.Rect(100, 200, 60, 20), function()
+    message = "other pressed"
+end)
+
 layer:addLabel(string.format("screen: %s", name), 10, 20)
 if lastCommand then
     layer:addLabel(string.format("command: %s", lastCommand), 10, 40)
     layer:addLabel(string.format("payload: %s", lastPayload), 10, 60)
+    if rate then
+        layer:addLabel(string.format("refresh: %s", rate), 10, 100)
+    end
+    if message then
+        layer:addLabel(message, 10, 80)
+    end
 end
 layer:render()
+
+rate = layer:scheduleRefresh()
 ]]
 
 return Module
