@@ -3,13 +3,7 @@
 --  All code (c) 2022, The Samedi Corporation.
 -- -=module.lua-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-local renderScript = [[
-local font = loadFont("Play", 20)
-local layer = createLayer()
-addText(layer, font, string.format("screen: %s", name), 10, 20)
-addText(layer, font, string.format("command: %s", command), 10, 40)
-addText(layer, font, string.format("payload: %s", payload), 10, 60)
-]]
+
 
 local Module = { }
 
@@ -29,7 +23,7 @@ function Module:onStart()
 
     local service = self.modula:getService("screen")
     if service then
-        local screen = service:registerScreen(self, "main", renderScript)
+        local screen = service:registerScreen(self, "main", self.renderScript)
         if screen then
             self.screen = screen
             screen:send("test", "hello world")
@@ -53,5 +47,21 @@ end
 function Module:onScreenReply(reply)
     printf("reply: %s", reply)
 end
+
+Module.renderScript = [[
+if command then
+    lastCommand = command
+    lastPayload = payload
+    reply = "done"
+end
+
+local font = loadFont("Play", 20)
+local layer = createLayer()
+addText(layer, font, string.format("screen: %s", name), 10, 20)
+if lastCommand then
+    addText(layer, font, string.format("command: %s", lastCommand), 10, 40)
+    addText(layer, font, string.format("payload: %s", lastPayload), 10, 60)
+end
+]]
 
 return Module
