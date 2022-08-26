@@ -60,20 +60,25 @@ local layer = render.Layer()
 layer:addButton("test", render.Rect(100, 100, 60, 20), function()
     message = "test pressed"
 end)
-layer:addButton("other", render.Rect(100, 200, 60, 20), { style = "lineStyle", action = function()
-    message = "other pressed"
-end})
+layer:addButton("other", render.Rect(100, 200, 60, 20), { 
+    style = "lineStyle", 
+    onMouseUp = function()
+        message = "other pressed"
+    end
+})
 
 startRect = startRect or render.Rect(100, 300, 60, 20)
-layer:addButton("dragme", startRect, function(pos, button)
-    if not buttonOffset then
-        buttonOffset = startRect:topLeft():minus(pos)
-    else
-        local newPos = pos:plus(buttonOffset)
-        startRect.x = newPos.x
-        startRect.y = newPos.y
+layer:addButton("dragme", startRect, {
+    onMouseDrag = function(pos, button)
+        if not buttonOffset then
+            buttonOffset = startRect:topLeft():minus(pos)
+        else
+            local newPos = pos:plus(buttonOffset)
+            startRect.x = newPos.x
+            startRect.y = newPos.y
+        end
     end
-end)
+})
 
 layer:addLabel(string.format("screen: %s", name), 10, 20)
 if lastCommand then
