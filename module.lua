@@ -1,13 +1,11 @@
--- -=module.lua-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 --  Created by Samedi on 20/08/2022.
 --  All code (c) 2022, The Samedi Corporation.
--- -=module.lua-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
-
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 local Module = { }
 
-function Module:register(modula, parameters)
+function Module:register(parameters)
     modula:registerForEvents(self, "onStart", "onStop")
 end
 
@@ -21,12 +19,12 @@ function Module:onStart()
     player.freeze(1)
     system.lockView(true)
 
-    local service = self.modula:getService("screen")
+    local service = modula:getService("screen")
     if service then
         local screen = service:registerScreen(self, "main", self.renderScript)
         if screen then
             self.screen = screen
-            screen:send("test", "hello world")
+            screen:send({ command = "test", argument = "hello world"})
         end
     end
 
@@ -38,20 +36,13 @@ function Module:onStop()
     printf("Screen Test stopped.")
 end
 
-function Module:onCommand(command, arguments)
-    if command == "test" then
-        printf("Hello from the test module")
-    end
-end
-
 function Module:onScreenReply(reply)
     printf("reply: %s", reply)
 end
 
 Module.renderScript = [[
-if command then
-    lastCommand = command
-    lastPayload = payload
+if payload and payload.command then
+    lastCommand = payload
     reply = "done"
 end
 
@@ -82,8 +73,8 @@ layer:addButton("dragme", startRect, {
 
 layer:addLabel(string.format("screen: %s", name), 10, 20)
 if lastCommand then
-    layer:addLabel(string.format("command: %s", lastCommand), 10, 40)
-    layer:addLabel(string.format("payload: %s", lastPayload), 10, 60)
+    layer:addLabel(string.format("command: %s", lastCommand.command), 10, 40)
+    layer:addLabel(string.format("argument: %s", lastCommand.argument), 10, 60)
     if rate then
         layer:addLabel(string.format("refresh: %s", rate), 10, 100)
     end

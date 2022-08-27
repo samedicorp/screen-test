@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../modula"
+		},
+		{
+			"path": "../../autoconf/custom"
+		},
+		{
+			"path": "."
+		}
+	]
+}
