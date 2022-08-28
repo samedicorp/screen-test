@@ -48,10 +48,10 @@ end
 
 local render = require('samedicorp.modula.render')
 local layer = render.Layer()
-layer:addButton("test", render.Rect(100, 100, 60, 20), function()
+layer:addButton(render.Rect(100, 100, 60, 20), "test", function()
     message = "test pressed"
 end)
-layer:addButton("other", render.Rect(100, 200, 60, 20), { 
+layer:addButton(render.Rect(100, 200, 60, 20), "other", { 
     style = "lineStyle", 
     onMouseUp = function()
         message = "other pressed"
@@ -59,7 +59,7 @@ layer:addButton("other", render.Rect(100, 200, 60, 20), {
 })
 
 startRect = startRect or render.Rect(100, 300, 60, 20)
-layer:addButton("dragme", startRect, {
+layer:addButton(startRect, "dragme", {
     onMouseDrag = function(pos, button)
         if not buttonOffset then
             buttonOffset = startRect:topLeft():minus(pos)
@@ -71,17 +71,18 @@ layer:addButton("dragme", startRect, {
     end
 })
 
-layer:addLabel(string.format("screen: %s", name), 10, 20)
+layer:addLabel(render.Rect(10, 20), string.format("screen: %s", name))
 if lastCommand then
-    layer:addLabel(string.format("command: %s", lastCommand.command), 10, 40)
-    layer:addLabel(string.format("argument: %s", lastCommand.argument), 10, 60)
+    layer:addLabel(render.Rect(10, 40), string.format("command: %s", lastCommand.command))
+    layer:addLabel(render.Rect(10, 60), string.format("argument: %s", lastCommand.argument))
     if rate then
-        layer:addLabel(string.format("refresh: %s", rate), 10, 100)
+        layer:addLabel(render.Rect(10, 100), string.format("refresh: %s", rate))
     end
     if message then
-        layer:addLabel(message, 10, 80)
+        layer:addLabel(render.Rect(10, 80), message)
     end
 end
+
 layer:render()
 
 rate = layer:scheduleRefresh()
