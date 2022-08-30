@@ -46,19 +46,20 @@ if payload and payload.command then
     reply = "done"
 end
 
-local render = require('samedicorp.modula.render')
-local layer = render.Layer()
-layer:addButton(render.Rect(100, 100, 60, 20), "test", function()
+local toolkit = require('samedicorp.toolkit.toolkit')
+local Layer = require('samedicorp.toolkit.layer')
+local layer = Layer.new()
+layer:addButton({100, 100, 60, 20}, "test", function()
     message = "test pressed"
 end)
-layer:addButton(render.Rect(100, 200, 60, 20), "other", { 
+layer:addButton({100, 200, 60, 20}, "other", { 
     style = "lineStyle", 
     onMouseUp = function()
         message = "other pressed"
     end
 })
 
-startRect = startRect or render.Rect(100, 300, 60, 20)
+startRect = startRect or toolkit.Rect(100, 300, 60, 20)
 layer:addButton(startRect, "dragme", {
     onMouseDrag = function(pos, button)
         if not buttonOffset then
@@ -71,15 +72,15 @@ layer:addButton(startRect, "dragme", {
     end
 })
 
-layer:addLabel(render.Rect(10, 20), string.format("screen: %s", name))
+layer:addLabel({10, 20}, string.format("screen: %s", name))
 if lastCommand then
-    layer:addLabel(render.Rect(10, 40), string.format("command: %s", lastCommand.command))
-    layer:addLabel(render.Rect(10, 60), string.format("argument: %s", lastCommand.argument))
+    layer:addLabel({10, 40}, string.format("command: %s", lastCommand.command))
+    layer:addLabel({10, 60}, string.format("argument: %s", lastCommand.argument))
     if rate then
-        layer:addLabel(render.Rect(10, 100), string.format("refresh: %s", rate))
+        layer:addLabel({10, 100}, string.format("refresh: %s", rate))
     end
     if message then
-        layer:addLabel(render.Rect(10, 80), message)
+        layer:addLabel({10, 80}, message)
     end
 end
 
