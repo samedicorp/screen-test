@@ -46,9 +46,8 @@ if payload and payload.command then
     reply = "done"
 end
 
-local toolkit = require('samedicorp.toolkit.toolkit')
-local Layer = require('samedicorp.toolkit.layer')
-local layer = Layer.new()
+local screen = require('samedicorp.toolkit.screen').new()
+local layer = screen:addLayer()
 layer:addButton({100, 100, 60, 20}, "test", function()
     message = "test pressed"
 end)
@@ -59,11 +58,12 @@ layer:addButton({100, 200, 60, 20}, "other", {
     end
 })
 
-startRect = startRect or toolkit.Rect(100, 300, 60, 20)
+startRect = startRect or {100, 300, 60, 20}
 layer:addButton(startRect, "dragme", {
     onMouseDrag = function(pos, button)
         if not buttonOffset then
-            buttonOffset = startRect:topLeft():minus(pos)
+            buttonOffset = button.rect:topLeft():minus(pos)
+            startRect = button.rect
         else
             local newPos = pos:plus(buttonOffset)
             startRect.x = newPos.x
@@ -85,8 +85,7 @@ if lastCommand then
 end
 
 layer:render()
-
-rate = layer:scheduleRefresh()
+screen:scheduleRefresh()
 ]]
 
 return Module
