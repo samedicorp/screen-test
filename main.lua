@@ -46,15 +46,18 @@ if payload and payload.command then
     reply = "done"
 end
 
+local bufferField
+
+fieldState = fieldState or {}
 local screen = toolkit.Screen.new()
 local layer = screen:addLayer()
 layer:addButton({100, 100, 60, 20}, "test", function()
-    message = "test pressed"
+    bufferField:append("test pressed", true)
 end)
 layer:addButton({100, 200, 60, 20}, "other", { 
     style = "lineStyle", 
     onMouseUp = function()
-        message = "other pressed"
+        bufferField:append("other pressed", true)
     end
 })
 
@@ -77,15 +80,15 @@ if lastCommand then
     layer:addLabel({10, 40}, string.format("command: %s", lastCommand.command))
     layer:addLabel({10, 60}, string.format("argument: %s", lastCommand.argument))
     if rate then
-        layer:addLabel({10, 100}, string.format("refresh: %s", rate))
-    end
-    if message then
-        layer:addLabel({10, 80}, message)
+        layer:addLabel({10, 80}, string.format("refresh: %s", rate))
     end
 end
 
+bufferField = layer:addField({200, 100, 200, 200}, fieldState)
+
 layer:render()
 screen:scheduleRefresh()
+
 ]]
 
 return Module
