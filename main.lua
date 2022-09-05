@@ -46,7 +46,7 @@ if payload and payload.command then
     reply = "done"
 end
 
-local screen = require('samedicorp.toolkit.screen').new()
+local screen = toolkit.Screen.new()
 local layer = screen:addLayer()
 layer:addButton({100, 100, 60, 20}, "test", function()
     message = "test pressed"
